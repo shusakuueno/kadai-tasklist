@@ -1,10 +1,9 @@
 class TasksController < ApplicationController
   before_action :require_user_logged_in, only: [:index, :show]
-  before_action :correct_user, only: [:show, :edit,:destroy]
+  before_action :correct_user, only: [:show, :edit, :update, :destroy]
   
   def index
-    @tasks = current_user.tasks
-    @tasks = Task.all.page(params[:page])
+    @tasks = current_user.tasks.page(params[:page])
   end
   
   def show
@@ -30,7 +29,7 @@ class TasksController < ApplicationController
   end
   
   def update
-    if @task = current_user.tasks.update(task_params)
+    if @task.update(task_params)
       flash[:success] = 'タスクは正常に更新されました'
       redirect_to root_url
     else
